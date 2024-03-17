@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -79,8 +82,26 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
+// 'gin.HandlerFunc' is a type used to define middleware functions
+// it has access to incoming HTTP request and outgoing HTTP response
+func Logger() gin.HandlerFunc {
+	return func(c *gin.Context){
+		start := time.Now()
+
+		// Process the request
+		c.Next()
+
+		end := time.Now()
+		latency := end.Sub(start)
+		fmt.Printf("[%s] %s - %v\n", c.Request.Method, c.Request.URL.Path, latency)	
+	}
+}
+
 func main() {
-	r := setupRouter()
+	router := setupRouter()
+
+	router.Use(Logger())
+
 	// Listen and Server in 0.0.0.0:8080
-	r.Run(":8080")
+	router.Run(":8080")
 }
