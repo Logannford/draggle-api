@@ -12,7 +12,7 @@ func setupRouter() *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 
-	// shorthand variable declaration
+	// ':=' shorthand variable declaration
 	r := gin.Default()
 
 	// Ping test
@@ -32,8 +32,11 @@ func setupRouter() *gin.Engine {
 		}
 	})
 
-	r.GET("/welcome", func(c *gin.Context){
-		c.String(http.StatusOK, "Welcome to the gin server")
+	r.GET("/welcome/:id", func(c *gin.Context){
+		id := c.Params.ByName("id")
+
+		// use the id to auth the user from supabase
+		c.String(http.StatusOK, "Welcome %s", id)
 	})
 
 
