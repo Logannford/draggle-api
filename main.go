@@ -23,6 +23,7 @@ func setupRouter() *gin.Engine {
 	// Get user value
 	r.GET("/user/:name", func(c *gin.Context) {
 		user := c.Params.ByName("name")
+		c.String(http.StatusOK, "Hello %s", user)
 		value, ok := db[user]
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"user": user, "value": value})
@@ -30,6 +31,12 @@ func setupRouter() *gin.Engine {
 			c.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
 		}
 	})
+
+	r.GET("/welcome", func(c *gin.Context){
+		c.String(http.StatusOK, "Welcome to the gin server")
+	})
+
+
 
 	// Authorized group (uses gin.BasicAuth() middleware)
 	// Same than:
