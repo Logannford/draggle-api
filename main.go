@@ -2,6 +2,7 @@ package main
 
 import (
 	"draggle/api/controllers"
+	"draggle/api/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -103,7 +104,7 @@ func main() {
 	public := r.Group("/api")
 
 	// Apply the middleware to the router
-	//r.Use(middleware.AuthMiddleware())
+	r.Use(middleware.AuthMiddleware())
 
 	public.POST("/register", controllers.Register)
 
