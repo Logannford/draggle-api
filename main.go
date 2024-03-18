@@ -1,7 +1,7 @@
 package main
 
 import (
-	middleware "draggle/api/middleware"
+	"draggle/api/controllers"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -96,13 +96,17 @@ func setupRouter() *gin.Engine {
 // }
 
 func main() {
-	router := setupRouter()
+	r := setupRouter()
 
 	// router.Use(Logger())
 
+	public := r.Group("/api")
+
 	// Apply the middleware to the router
-	router.Use(middleware.AuthMiddleware())
+	//r.Use(middleware.AuthMiddleware())
+
+	public.POST("/register", controllers.Register)
 
 	// Listen and Server in 0.0.0.0:8080
-	router.Run(":8080")
+	r.Run(":8080")
 }

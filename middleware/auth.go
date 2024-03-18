@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 
+	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +18,25 @@ func ResponseWithError(c *gin.Context, opts ResponseOptions) {
 		opts.Code = http.StatusUnauthorized
 	}
 	c.AbortWithStatusJSON(opts.Code, gin.H{"error": opts.Message})
+}
+
+var identityKey = "id"
+
+// User demo
+type User struct {
+  UserName  string
+  FirstName string
+  LastName  string
+}
+
+func helloHandler(c *gin.Context) {
+  claims := jwt.ExtractClaims(c)
+  user, _ := c.Get(identityKey)
+  c.JSON(200, gin.H{
+    "userID":   claims[identityKey],
+    "userName": user.(*User).UserName,
+    "text":     "Hello World.",
+  })
 }
 
 // Middleware to check if the user is authorized
@@ -35,7 +55,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		//jwt.ErrEmptyAuthHeader = "No token"
+		
 
 		// Continue down the chain to handler etc
 		c.Next()
