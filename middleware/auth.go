@@ -4,8 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/appleboy/gin-jwt/v2"
 )
 
 type ResponseOptions struct {
@@ -13,7 +11,7 @@ type ResponseOptions struct {
 	Message interface{}
 }
 
-func responseWithError(c *gin.Context, opts ResponseOptions) {
+func ResponseWithError(c *gin.Context, opts ResponseOptions) {
 	// default to 401 if no code is passed in
 	if(opts.Code == 0){
 		opts.Code = http.StatusUnauthorized
@@ -22,7 +20,7 @@ func responseWithError(c *gin.Context, opts ResponseOptions) {
 }
 
 // Middleware to check if the user is authorized
-func authMiddleware() gin.HandlerFunc {
+func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context){
 		// grab the jwt token from the header
 		jwtToken := c.GetHeader("Authorization")
@@ -30,12 +28,14 @@ func authMiddleware() gin.HandlerFunc {
 		// if the token is empty, return an error
 		if jwtToken == "" {
 			// code 401 is the default
-			responseWithError(c, ResponseOptions{
+			ResponseWithError(c, ResponseOptions{
 				Message: "No token provided",
 			})		
 
 			return
 		}
+
+		//jwt.ErrEmptyAuthHeader = "No token"
 
 		// Continue down the chain to handler etc
 		c.Next()

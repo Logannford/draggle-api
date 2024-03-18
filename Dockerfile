@@ -4,6 +4,6 @@ WORKDIR /
 
 COPY . . 
 
-RUN go build -o main main.go
+RUN go build -o main *.go
 
 CMD ["/main"]
