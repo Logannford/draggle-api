@@ -9,7 +9,7 @@ import (
 
 type ResponseOptions struct {
 	Code    int
-	Message interface{}
+	Message string
 }
 
 func ResponseWithError(c *gin.Context, opts ResponseOptions) {
