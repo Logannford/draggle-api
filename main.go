@@ -2,7 +2,6 @@ package main
 
 import (
 	"draggle/api/controllers"
-	"draggle/api/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +19,12 @@ func setupRouter() *gin.Engine {
 	// Ping test
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
+
+		jwt, _ := c.Get("jwt")
+
+		c.JSON(http.StatusOK, gin.H{
+			"jwt": jwt,
+		})
 	})
 
 	// Get user value
@@ -104,9 +109,12 @@ func main() {
 	public := r.Group("/api")
 
 	// Apply the middleware to the router
-	r.Use(middleware.AuthMiddleware())
+	//r.Use(middleware.AuthMiddleware())
 
 	public.POST("/register", controllers.Register)
+	public.GET("/register", controllers.Register)
+
+	
 
 	// Listen and Server in 0.0.0.0:8080
 	r.Run(":8080")

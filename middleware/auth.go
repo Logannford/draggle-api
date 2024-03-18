@@ -55,6 +55,9 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		// add the token to the context
+		c.Set("jwt", jwtToken)
+
 		c.JSON(http.StatusOK, gin.H{
 			"message": jwtToken,
 		})

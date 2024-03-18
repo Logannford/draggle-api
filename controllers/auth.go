@@ -7,7 +7,11 @@ import (
 )
 
 func Register(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Register",
-	})
+	if(c.Request.Method == "POST"){
+		c.JSON(http.StatusOK, gin.H{"message": "Register - POST"})
+	}
+
+	if(c.Request.Method == "GET"){
+		c.JSON(http.StatusOK, gin.H{"message": "Register - GET"})
+	}
 }
