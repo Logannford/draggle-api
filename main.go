@@ -128,10 +128,11 @@ package main
 
 import (
 	"embed"
-	"html/template"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"text/template"
 )
 
 //go:embed templates/*
@@ -150,6 +151,9 @@ func main() {
         data := map[string]string{
             "Region": os.Getenv("FLY_REGION"),
         }
+
+				// print hello 
+				fmt.Println("Hello, World! x10")
 
         t.ExecuteTemplate(w, "index.html.tmpl", data)
     })
