@@ -1,9 +1,9 @@
-FROM golang:1.22.1
+From golang:1.22.1
 
-WORKDIR /
+WORKDIR /go/src/app
 
-COPY . . 
+COPY . .
 
 RUN go build -o main main.go
 
-CMD ["/main"]
+CMD ["./main"]
